@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+# Launch a Chrome window as an app (no tab bar, no address bar)
+
+# Assuming only URL is passed, i.e. $1 is the URL
+# If that changes, the following commented code might be useful
+# SECOND_LAST_COMMAND=$#-1
+# declare -i SECOND_LAST_COMMAND
+# google-chrome $argv[1,$SECOND_LAST_COMMAND]
+
+echo $1 | egrep '(http)|(https)' > /dev/null 2>&1
+[[ $? = 0 ]] && google-chrome --app=$1
+[[ $? != 0 ]] && google-chrome --app=http://$1
