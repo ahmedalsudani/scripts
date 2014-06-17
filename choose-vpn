@@ -1,6 +1,6 @@
 #!/bin/sh
 
 cd /etc/openvpn
-rm *.conf 
-cp config/$1 .
-service openvpn restart
+sudo rm *.conf 
+sudo cp config/$1 .
+sudo service openvpn restart
