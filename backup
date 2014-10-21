@@ -1,0 +1,14 @@
+#! /bin/zsh
+
+source ~/.zshrc
+
+DATE=$(date +%F)
+
+for i in $BACKUP_DIRECTORIES;
+    do
+set -x
+        tarsnap --dry-run -f "$DATE$HOME/$i" -c "$HOME/$i"
+set +x
+    done
+
+
