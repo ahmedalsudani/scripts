@@ -1,0 +1,7 @@
+#! /bin/zsh
+
+TARGET="$1"
+source ~/.zshrc
+
+DATE=$(date +'%F-%H%M%S')
+tarsnap -f "$DATE/manual/$TARGET" -c "$TARGET"
