@@ -5,6 +5,7 @@ DATE=$(date +%F)
 
 for i in $BACKUP_DIRECTORIES;
     do
+        echo backing up $i
         tarsnap -f "$DATE$HOME/$i" -c "$HOME/$i"
     done
 
