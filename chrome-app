@@ -8,6 +8,6 @@
 # declare -i SECOND_LAST_COMMAND
 # google-chrome $argv[1,$SECOND_LAST_COMMAND]
 
-echo $1 | egrep '(http)|(https)' > /dev/null 2>&1
+echo $1 | egrep '^(http)|(https)|(file)' > /dev/null 2>&1
 [[ $? = 0 ]] && google-chrome --app=$1
 [[ $? != 0 ]] && google-chrome --app=http://$1
