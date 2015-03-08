@@ -4,7 +4,6 @@ from pyPdf import PdfFileWriter, PdfFileReader
 input = PdfFileReader(sys.stdin)
 output = PdfFileWriter()
 for p in [input.getPage(i) for i in range(0,input.getNumPages())]:
-    for p in [input.getPage(i) for i in range(0,input.getNumPages())]:
     q,r,s  = 3 * copy.copy(p)
     (w, h) = p.mediaBox.upperRight
     p.mediaBox.lowerRight = (w/2, h/2)
@@ -12,6 +11,6 @@ for p in [input.getPage(i) for i in range(0,input.getNumPages())]:
     r.mediaBox.upperRight = (w/2, h/2)
     s.mediaBox.upperLeft = (w/2, h/2)
     for i in p, q, r, s:
-    output.addPage(i)
+        output.addPage(i)
 output.write(sys.stdout)
 
