@@ -1,15 +1,23 @@
 #!/usr/bin/env python
 import copy, sys
 from pyPdf import PdfFileWriter, PdfFileReader
+
+MARGIN_PCT = 0.023
+VERT_CORRECTION = 1.30
+
 input = PdfFileReader(sys.stdin)
 output = PdfFileWriter()
 for p in [input.getPage(i) for i in range(0,input.getNumPages())]:
     q, r, s = (copy.copy(p) for i in range(3))
     (w, h) = p.mediaBox.upperRight
     p.mediaBox.lowerRight = (w/2, h/2)
+    p.mediaBox.upperLeft = ((w * MARGIN_PCT), h - (h * MARGIN_PCT * VERT_CORRECTION))
     q.mediaBox.lowerLeft = (w/2, h/2)
+    q.mediaBox.upperRight = (w - (w * MARGIN_PCT), h - (h * MARGIN_PCT * VERT_CORRECTION))
     r.mediaBox.upperRight = (w/2, h/2)
+    r.mediaBox.lowerLeft = ((w * MARGIN_PCT), (h * MARGIN_PCT * VERT_CORRECTION))
     s.mediaBox.upperLeft = (w/2, h/2)
+    s.mediaBox.lowerRight = (w - (w * MARGIN_PCT), (h * MARGIN_PCT * VERT_CORRECTION))
     for i in p, q, r, s:
         output.addPage(i)
 output.write(sys.stdout)
