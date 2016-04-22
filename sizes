@@ -1,2 +1,2 @@
 #! /bin/sh
-du -h --max-depth=1 $* | sort -hsr
+du -h --max-depth=1 "$@" | sort -hsr

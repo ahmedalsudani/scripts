@@ -1,0 +1,17 @@
+#! env bash
+
+FILE_NAME="$1"
+
+compile_latex() {
+    pdflatex -interaction=nonstopmode --output-directory ./build "$FILE_NAME"
+}
+
+generate_bibliography() {
+(cd build && cp ../${FILE_NAME/.tex/.bib} ./ && bibtex ${FILE_NAME/.tex/})
+}
+
+while inotifywait -e close_write "$FILE_NAME"; do 
+    compile_latex && 
+    generate_bibliography && 
+    compile_latex
+done
