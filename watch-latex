@@ -1,4 +1,4 @@
-#! env bash
+#!/bin/env bash
 
 FILE_NAME="$1"
 
@@ -10,7 +10,7 @@ generate_bibliography() {
 (cd build && cp ../${FILE_NAME/.tex/.bib} ./ && bibtex ${FILE_NAME/.tex/})
 }
 
-while inotifywait -e close_write "$FILE_NAME"; do 
+while watch-file "$FILE_NAME"; do
     compile_latex && generate_bibliography;
     compile_latex
 done
