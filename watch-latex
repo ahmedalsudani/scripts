@@ -11,6 +11,6 @@ generate_bibliography() {
 }
 
 while watch-file "$FILE_NAME"; do
-    compile_latex && generate_bibliography;
+    compile_latex > /dev/null && generate_bibliography;
     compile_latex
 done
