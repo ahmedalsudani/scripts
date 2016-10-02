@@ -2,6 +2,7 @@
 
 FILE_NAME="$1"
 
+
 compile_latex() {
     pdflatex -interaction=nonstopmode --output-directory ./build "$FILE_NAME"
 }
@@ -9,6 +10,8 @@ compile_latex() {
 generate_bibliography() {
 (cd build && cp ../${FILE_NAME/.tex/.bib} ./ && bibtex ${FILE_NAME/.tex/})
 }
+
+mkdir -p build
 
 while watch-file "$FILE_NAME"; do
     compile_latex > /dev/null && generate_bibliography;
