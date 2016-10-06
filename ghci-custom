@@ -1,1 +1,2 @@
+#! /bin/bash
 ghci -ghci-script <(echo ":set +m")
