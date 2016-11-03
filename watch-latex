@@ -8,12 +8,17 @@ compile_latex() {
 }
 
 generate_bibliography() {
-(cd build && cp ../${FILE_NAME/.tex/.bib} ./ && bibtex ${FILE_NAME/.tex/})
+    (cd build && cp ../${FILE_NAME/.tex/.bib} ./ && bibtex ${FILE_NAME/.tex/})
+}
+
+compile_with_bibliography() {
+    compile_latex > /dev/null && generate_bibliography;
+    compile_latex
 }
 
 mkdir -p build
+compile_with_bibliography
 
 while watch-file "$FILE_NAME"; do
-    compile_latex > /dev/null && generate_bibliography;
-    compile_latex
+    compile_with_bibliography
 done
