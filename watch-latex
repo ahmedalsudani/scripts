@@ -8,11 +8,12 @@ compile_latex() {
 }
 
 generate_bibliography() {
-    (cd build && cp ../${FILE_NAME/.tex/.bib} ./ && bibtex ${FILE_NAME/.tex/})
+    (cd build && cp ../*.bib ./ && bibtex ${FILE_NAME/.tex/} )
 }
 
 compile_with_bibliography() {
     compile_latex > /dev/null && generate_bibliography;
+    compile_latex > /dev/null
     compile_latex
 }
 
