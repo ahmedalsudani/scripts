@@ -1,0 +1,4 @@
+#! /usr/bin/env bash
+SCANNER=xerox_mfp:libusb:$(lsusb -d 04e8:3432 | awk '{print $2 ":" $4}' | sed 's/.$//')
+
+scanimage --device="$SCANNER" "$@"
