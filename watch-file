@@ -1,7 +1,7 @@
 #!/bin/env zsh
 IFS=
 
-while inotifywait --format "%f" -e close_write,moved_to,create . 2>/dev/null | read -r MODIFIED; do
+while inotifywait --format "%w%f" -e close_write,moved_to,create . **/*(/) 2>/dev/null | read -r MODIFIED; do
     for FILENAME in "$@"; do
         if [[ "$MODIFIED"  = "$FILENAME" ]]; then
             exit 0;
