@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+# start Signal Messenger (Chromium app)
+chromium --profile-directory=Default --app-id=bikioccmkafdpakkkcpdbppfkghcmihk
