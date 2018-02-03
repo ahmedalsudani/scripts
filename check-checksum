@@ -2,7 +2,8 @@
 
 expected=$1
 file=$2
+hash=${3:-sha256sum}
 
-actual=$(sha256sum "$file" | awk '{print $1}')
+actual=$("$hash" "$file" | awk '{print $1}')
 
 [[ $actual = $expected ]] && echo match || (tput setf 4 ; echo NOT A MATCH! ; tput sgr0)
