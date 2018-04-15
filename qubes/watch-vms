@@ -14,8 +14,13 @@ TWO='$2'
 
 alias cmd="qvm-ls --no-spinner -O NAME,STATE,MEMORY,PRIV-CURR,CLASS,NETVM"
 
+# Header for use in filtered output (which doesn't include header)
 HEADER=$(cmd | head -1)
 
+### HELPERS THAT NEED WRAPPING ###
+
+# Only list running and transient. Unused as of the writing of this comment
+# TODO: add switch for using this
 alias filteredcmd="cmd | awk '$TWO!=$HALTED {print $ZERO};'"
 
 alias colour=" \
@@ -24,6 +29,8 @@ alias colour=" \
 	s/Transient/${RED}Transient${RESET}/; \
 '"
 
+# For some reason, this sorts by length of first field to break ties.
+# I'm too lazy to investigate.
 alias sortedcmd="cmd | tail -n +2 | sort -s -k2,2r"
 
 colourcmd () {
@@ -36,11 +43,14 @@ colourcmd () {
 	tput ed
 }
 
+### WRAPPER FOR HELPERS ###
+
 wrappedcolourcmd () {
+	# Need to clear rest of line because there might be text there
 	colourcmd | sed "s/$/$CLEAR/;"
 }
 
-### COMMAND STARTS HERE ###
+### OUTPUT STARTS HERE ###
 
 tput clear
 
@@ -53,6 +63,7 @@ trap "tput cvvis" SIGINT SIGTERM
 wrappedcolourcmd
 
 while sleep 2; do
+	# Flickers without this
 	new=$(wrappedcolourcmd)
 	echo "$new"
 done
