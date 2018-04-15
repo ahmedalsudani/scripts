@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+shopt -s expand_aliases
+
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+YELLOW=$(tput setaf 3)
+RESET=$(tput sgr0)
+CLEAR=$(tput el)
+
+HALTED='"Halted"'
+ZERO='$0'
+TWO='$2'
+
+alias cmd="qvm-ls --no-spinner -O NAME,STATE,MEMORY,PRIV-CURR,CLASS,NETVM"
+
+HEADER=$(cmd | head -1)
+
+alias filteredcmd="cmd | awk '$TWO!=$HALTED {print $ZERO};'"
+
+alias colour=" \
+	sed ' \
+	s/Running/${GREEN}Running${RESET}/; \
+	s/Transient/${RED}Transient${RESET}/; \
+'"
+
+alias sortedcmd="cmd | tail -n +2 | sort -s -k2,2r"
+
+colourcmd () {
+	# Move to top left
+	tput cup 0 0 
+	date 
+	echo "$HEADER" 
+	sortedcmd | colour
+	# Clear rest of screen
+	tput ed
+}
+
+wrappedcolourcmd () {
+	colourcmd | sed "s/$/$CLEAR/;"
+}
+
+### COMMAND STARTS HERE ###
+
+tput clear
+
+# Hide cursor
+tput civis
+
+# Restore cursor
+trap "tput cvvis" SIGINT SIGTERM
+
+wrappedcolourcmd
+
+while sleep 2; do
+	new=$(wrappedcolourcmd)
+	echo "$new"
+done
