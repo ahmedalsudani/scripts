@@ -19,6 +19,7 @@ compile_with_bibliography() {
 
 mkdir -p build
 compile_with_bibliography
+evince ./build/${FILE_NAME/.tex/.pdf} >/dev/null 2>&1 &
 
 while watch-file "$FILE_NAME"; do
     compile_with_bibliography
