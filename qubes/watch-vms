@@ -25,8 +25,8 @@ alias filteredcmd="cmd | awk '$TWO!=$HALTED {print $ZERO};'"
 
 alias colour=" \
 	sed ' \
-	s/Running/${GREEN}Running${RESET}/; \
-	s/Transient/${RED}Transient${RESET}/; \
+	s/.*Running/${GREEN}\0${RESET}/; \
+	s/.*Transient/${RED}\0${RESET}/; \
 '"
 
 # For some reason, this sorts by length of first field to break ties.
