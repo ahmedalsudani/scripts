@@ -29,9 +29,11 @@ alias colour=" \
 	s/.*Transient/${RED}\0${RESET}/; \
 '"
 
-# For some reason, this sorts by length of first field to break ties.
-# I'm too lazy to investigate.
-alias sortedcmd="cmd | tail -n +2 | sort -s -k2,2r"
+# I don't understand the dumpster fire that is sort, but this weems to work
+# For some reason, I need to refer to the second field as 3, and I need
+# to change the LOCALE for it to handle spaces properly. There should
+# be a sane_sort program ...
+alias sortedcmd="cmd | tail -n +2 | LC_ALL=POSIX sort -s -k3,3r"
 
 colourcmd () {
 	# Move to top left
