@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+CHANGE=${1}
+TARGET=${2:-//...}
+p4 -F '%clientFile%' fstat -Ro -e "$CHANGE" "$TARGET"

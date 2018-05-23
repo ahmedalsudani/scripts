@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+p4 diff2 "$@" | colordiff | less -SR
