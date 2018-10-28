@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+then
+	echo "Need a vm name"
+	exit 1
+fi
+
+if [ -z "$2" ]
+then
+	echo "Need a scale factor"
+	exit 1
+fi
+
+qvm-run "$1" "gsettings set org.gnome.settings-daemon.plugins.xsettings overrides \"[{'Gdk/WindowScalingFactor', <$2>}]\""

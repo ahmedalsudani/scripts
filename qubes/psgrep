@@ -1,0 +1,8 @@
+#!/bin/bash
+
+PGREP_OUTPUT=$(pgrep "$1")
+
+if [ -n "$PGREP_OUTPUT" ]
+then
+    ps $PGREP_OUTPUT
+fi

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+qvm-ls --no-spinner | awk '$3 == "DispVM" {print $1}'

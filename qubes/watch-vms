@@ -12,7 +12,7 @@ HALTED='"Halted"'
 ZERO='$0'
 TWO='$2'
 
-alias cmd="qvm-ls --no-spinner -O NAME,STATE,MEMORY,PRIV-CURR,CLASS,NETVM"
+alias cmd="qvm-ls --no-spinner -O NAME,STATE,TEMPLATE,PRIV-CURR,CLASS,NETVM"
 
 # Header for use in filtered output (which doesn't include header)
 HEADER=$(cmd | head -1)
@@ -33,7 +33,7 @@ alias colour=" \
 # For some reason, I need to refer to the second field as 3, and I need
 # to change the LOCALE for it to handle spaces properly. There should
 # be a sane_sort program ...
-alias sortedcmd="cmd | tail -n +2 | LC_ALL=POSIX sort -s -k3,3r"
+alias sortedcmd="filteredcmd | tail -n +2 | LC_ALL=POSIX sort -s -k3,3r"
 
 colourcmd () {
 	# Move to top left
@@ -41,8 +41,6 @@ colourcmd () {
 	date 
 	echo "$HEADER" 
 	sortedcmd | colour
-	# Clear rest of screen
-	tput ed
 }
 
 ### WRAPPER FOR HELPERS ###
@@ -50,6 +48,14 @@ colourcmd () {
 wrappedcolourcmd () {
 	# Need to clear rest of line because there might be text there
 	colourcmd | sed "s/$/$CLEAR/;"
+}
+
+main () {
+	# Flickers without this
+	new="$(wrappedcolourcmd)"
+	echo "$new"
+	# Clear rest of screen
+	tput ed
 }
 
 ### OUTPUT STARTS HERE ###
@@ -62,10 +68,7 @@ tput civis
 # Restore cursor
 trap "tput cvvis" SIGINT SIGTERM
 
-wrappedcolourcmd
-
-while sleep 2; do
-	# Flickers without this
-	new=$(wrappedcolourcmd)
-	echo "$new"
+main
+while sleep 10; do
+	main
 done
