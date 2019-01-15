@@ -14,12 +14,14 @@ then
     fi
 fi
 
+if [[ "$1" == "-n" || "$2" == "-n" ]]
+then
+    echo "This option has been deprecated. Aborting."
+    exit 1
+fi
+
 echo "Powering down VMs"
 
 qvm-shutdown --wait --all
 
-if [[ "$1" != "-n" && "$2" != "-n" ]]
-then
-    echo "Halting system"
-    systemctl poweroff
-fi
+systemctl poweroff

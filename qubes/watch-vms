@@ -5,6 +5,9 @@ shopt -s expand_aliases
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
+BLUE=$(tput setaf 4)
+MAGENTA=$(tput setaf 5)
+CYAN=$(tput setaf 6)
 RESET=$(tput sgr0)
 CLEAR=$(tput el)
 
@@ -12,7 +15,7 @@ HALTED='"Halted"'
 ZERO='$0'
 TWO='$2'
 
-alias cmd="qvm-ls --no-spinner -O NAME,STATE,TEMPLATE,PRIV-CURR,CLASS,NETVM"
+alias cmd="qvm-ls --no-spinner -O NAME,STATE,TEMPLATE,CLASS,NETVM"
 
 # Header for use in filtered output (which doesn't include header)
 HEADER=$(cmd | head -1)
@@ -25,6 +28,7 @@ alias filteredcmd="cmd | awk '$TWO!=$HALTED {print $ZERO};'"
 
 alias colour=" \
 	sed ' \
+	s/^sys-firewall.*/${MAGENTA}\0${RESET}/; \
 	s/.*Running/${GREEN}\0${RESET}/; \
 	s/.*Transient/${RED}\0${RESET}/; \
 '"
@@ -37,9 +41,9 @@ alias sortedcmd="filteredcmd | tail -n +2 | LC_ALL=POSIX sort -s -k3,3r"
 
 colourcmd () {
 	# Move to top left
-	tput cup 0 0 
-	date 
-	echo "$HEADER" 
+	tput cup 0 0
+	date
+	echo "$HEADER"
 	sortedcmd | colour
 }
 
@@ -65,8 +69,11 @@ tput clear
 # Hide cursor
 tput civis
 
+# Don't wrap long lines
+tput rmam
+
 # Restore cursor
-trap "tput cvvis" SIGINT SIGTERM
+trap "tput cvvis; tput smam" SIGINT SIGTERM
 
 main
 while sleep 10; do
