@@ -31,6 +31,7 @@ alias colour=" \
 	s/^sys-firewall.*/${MAGENTA}\0${RESET}/; \
 	s/.*Running/${GREEN}\0${RESET}/; \
 	s/.*Transient/${RED}\0${RESET}/; \
+	s/.*Dying/${RED}\0${RESET}/; \
 '"
 
 # I don't understand the dumpster fire that is sort, but this weems to work
@@ -41,25 +42,27 @@ alias sortedcmd="filteredcmd | tail -n +2 | LC_ALL=POSIX sort -s -k3,3r"
 
 colourcmd () {
 	# Move to top left
-	tput cup 0 0
-	date
-	echo "$HEADER"
+	tput cup 0 0 
+	date 
+	echo "$HEADER" 
 	sortedcmd | colour
+}
+
+# highlight i-th column
+highlight_col () {
+	local prog='{for (i=1 ; i <= NR ; i++){printf "%s ", $i}}'
+	awk "$prog" -
 }
 
 ### WRAPPER FOR HELPERS ###
 
-wrappedcolourcmd () {
-	# Need to clear rest of line because there might be text there
-	colourcmd | sed "s/$/$CLEAR/;"
-}
-
 main () {
 	# Flickers without this
-	new="$(wrappedcolourcmd)"
-	echo "$new"
-	# Clear rest of screen
-	tput ed
+	new="$(colourcmd)"
+	new="${new}\n$(printf '%250s' | tr ' ' =)"
+	new="${new}\n$(psgrep qvm-run)"
+	printf "$new$(tput ed)" | sed "s/$/$CLEAR/;"
+	
 }
 
 ### OUTPUT STARTS HERE ###
@@ -76,6 +79,6 @@ tput rmam
 trap "tput cvvis; tput smam" SIGINT SIGTERM
 
 main
-while sleep 10; do
+while sleep 5; do
 	main
 done

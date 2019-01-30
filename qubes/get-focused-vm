@@ -1,11 +1,4 @@
 #!/bin/bash
-set -x
-
-if [ "$(basename $0)" = launch-in-focused-vm ]; then
-    _ARG="--service -q --"
-else
-    _ARG=
-fi
 
 get_id() {
     local id=$(xprop -root _NET_ACTIVE_WINDOW)
@@ -22,9 +15,7 @@ get_vm() {
 main() {
     local vm=$(get_vm)
     if [[ -n "$vm" ]]; then
-        qvm-run $_ARG "$vm" "bash -c '$*'"
-    else # run terminal in dom0
-        exec bash -c "$*"
+        echo "$vm"
     fi
 }
 

@@ -25,3 +25,4 @@ echo "Powering down VMs"
 qvm-shutdown --wait --all
 
 systemctl poweroff
+
