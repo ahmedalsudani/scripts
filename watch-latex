@@ -17,9 +17,17 @@ compile_with_bibliography() {
     compile_latex
 }
 
-mkdir -p build
-compile_with_bibliography
-evince ./build/${FILE_NAME/.tex/.pdf} >/dev/null 2>&1 &
+init() {
+    if test -z "$(shopt -s nullglob; echo *.bib)"
+    then
+        touch ${FILE_NAME/.tex/.bib}
+    fi
+    mkdir -p build
+    compile_with_bibliography
+    evince ./build/${FILE_NAME/.tex/.pdf} >/dev/null 2>&1 &
+}
+
+init
 
 while watch-file "$FILE_NAME"; do
     compile_with_bibliography
