@@ -1,0 +1,12 @@
+#!/bin/bash
+
+RESET=$(tput sgr0)
+YELLOW=$(tput setaf 3)
+
+echo "$YELLOW==> $RESET$@"
+read -p "Are you sure you would like to run the command above [y/N]? " -n 1 -r
+echo
+
+if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+    "$@"
+fi
