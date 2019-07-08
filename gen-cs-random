@@ -1,0 +1,10 @@
+#! /bin/bash
+
+LENGTH="$1"
+
+if [ -z "$LENGTH" ]; then
+    echo "Missing length"
+    exit 1
+fi
+
+LC_ALL=C tr -dc '[:alnum:]' < /dev/urandom | head -c"$LENGTH"
