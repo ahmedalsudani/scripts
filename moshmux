@@ -1,0 +1,5 @@
+#! /bin/sh
+
+TERM=xterm-256color
+
+mosh -- "$@" sh -c "tmux attach || tmux"
