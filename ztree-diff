@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ec --eval "(ztree-diff \"$1\" \"$2\")"
