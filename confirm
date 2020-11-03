@@ -9,4 +9,6 @@ echo
 
 if [[ "$REPLY" =~ ^[Yy]$ ]]; then
     "$@"
+else
+    exit 42
 fi

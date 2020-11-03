@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-p4 unshelve -s "$1" -c "$1"
+CL="$1"
+shift
+p4 unshelve -s "$CL" -c "$CL" "$@"

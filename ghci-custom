@@ -1,2 +1,5 @@
 #! /bin/bash
-ghci -ghci-script <(echo ":set +m")
+
+SCRIPTFILE=/tmp/stack-ghci-script
+echo ":set +m" > "$SCRIPTFILE"
+stack ghci --ghci-options "-ghci-script $SCRIPTFILE"
