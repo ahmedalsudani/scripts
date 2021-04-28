@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-unzip -d "$@" "$@"
+set -ex
+TARGET_DIR="$(echo $@ | sed 's/\.zip$//')"
+unzip -d "$TARGET_DIR" "$@"
