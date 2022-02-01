@@ -1,5 +1,7 @@
-#! /bin/sh
+#! /bin/bash
 
-TERM=xterm-256color
+SSH=${SSH:-ssh}
 
-ssh $* -t 'sh -c "tmux attach || tmux"'
+export TERM=xterm-256color
+
+$SSH $* -t 'sh -c "tmux attach || tmux"'
