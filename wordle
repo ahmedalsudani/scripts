@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+import argparse
+import re
+
+def includes(letter, word):
+    for w in word:
+        if w == letter:
+             return True
+    return False
+
+def includes_all(letters, word):
+    for l in letters:
+        if not includes(l, word):
+            return False
+    return True
+
+def includes_any(r, word):
+    if(r):
+        return r.search(word)
+    return False
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('letters')
+    parser.add_argument('--match')
+    parser.add_argument('--not')
+    args = vars(parser.parse_args())
+
+    letters = args['letters']
+    matches = args['match'] and re.compile(args['match'])
+    notletters = args['not'] and re.compile('|'.join(args['not']))
+
+    upper = re.compile('[A-Z]')
+
+    with open('/usr/share/dict/words', 'r') as f:
+        for line in f:
+            word = line.strip()
+            if upper.search(word):
+                continue
+            if len(word) == 5 and includes_all(letters, word) and not includes_any(notletters, word):
+                if matches and not matches.match(word):
+                    continue
+                print(word)
+
+if __name__ == '__main__':
+    main()

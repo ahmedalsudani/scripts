@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CHANGE=${1}
+TARGET=${2:-//...}
+
+GREEN=$(tput setaf 2)
+CLEAR=$(tput el)
+
+{
+p4 diff "$TARGET" | colordiff
+
+p4 -F '%clientFile% %action%' fstat -Ro -e "$CHANGE" "$TARGET" |
+    awk '$2 == "add" {print $1}' | 
+    xargs tail -n +1 |
+    sed "s/^==>.*<==$/${GREEN}=== ADD ===\n${GREEN}\\0/"
+} | less -SR

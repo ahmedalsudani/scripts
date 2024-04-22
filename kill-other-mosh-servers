@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+PSTREE=$(pstree -spn $BASHPID)
+MOSHPID=$(echo "$PSTREE" | grep -o 'mosh-server([0-9]\+)' | egrep -o '[0-9]+')
+
+kill $(pgrep mosh-server | egrep -v "$MOSHPID")
+
